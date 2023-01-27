@@ -30,11 +30,20 @@ class ColorFilterWorker(
             ?.toUri()
             ?.toFile()
         delay(5000L)
-        imageFile?.let { file ->
+        return imageFile?.let { file ->
             val bmp = BitmapFactory.decodeFile(file.absolutePath)
             val resultBmp = bmp.copy(bmp.config, true)
             val paint = Paint()
-            paint.colorFilter = LightingColorFilter(0x08FF04, 1)
+
+            val colors = arrayOf(
+                0xFF8F00,
+                0xEF6C00,
+                0xD84315,
+                0xD84315,
+                0x08FF04
+            )
+
+            paint.colorFilter = LightingColorFilter(colors.random(), 1)
             val canvas = Canvas(resultBmp)
             canvas.drawBitmap(resultBmp, 0f, 0f, paint)
 
@@ -47,19 +56,19 @@ class ColorFilterWorker(
                     outputStream
                 )
 
-                if (successful) Result.success(
-                    workDataOf(
-                        WorkerKeys.FILTER_URI to filterImageFile.toUri().toString()
+                if (successful) {
+                    Result.success(
+                        workDataOf(
+                            WorkerKeys.FILTER_URI to filterImageFile.toUri().toString()
+                        )
                     )
-                )
-                else Result.failure(
+                } else Result.failure(
                     workDataOf(
                         WorkerKeys.ERROR_MSG to "Color filtering is not successful"
                     )
                 )
             }
-        }
-        return Result.failure(
+        } ?: Result.failure(
             workDataOf(
                 WorkerKeys.ERROR_MSG to "Image not found!"
             )
