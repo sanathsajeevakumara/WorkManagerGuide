@@ -34,9 +34,9 @@ class ImageDownloadWorker(
             return withContext(Dispatchers.IO) {
                 val file = File(context.cacheDir, "image.jpg")
                 val outputStream = FileOutputStream(file)
-                outputStream.use { stram ->
+                outputStream.use { stream ->
                     try {
-                        stram.write(body.bytes())
+                        stream.write(body.bytes())
                     } catch (e: IOException) {
                         return@withContext Result.failure(
                             workDataOf(
