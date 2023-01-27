@@ -1,5 +1,6 @@
 package com.sanathcoding.workmanagerguide.data.remote
 
+import com.sanathcoding.workmanagerguide.core.util.ConstValue.BASE_URL
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -14,7 +15,7 @@ interface FileApi {
     companion object {
         val instance by lazy {
             Retrofit.Builder()
-                .baseUrl("https://avatars.githubusercontent.com")
+                .baseUrl(BASE_URL)
                 .build()
                 .create(FileApi::class.java)
         }
